@@ -21,12 +21,17 @@ public class SelectorTest {
 
         WebElement idelement = driver.findElement(By.id("clickOnMe"));
         WebElement idelementcss = driver.findElement(By.cssSelector("button[id=clickOnMe]"));
+        WebElement idelementcss2 = driver.findElement(By.cssSelector("#clickOnMe"));
+
 
         WebElement nameelem=driver.findElement(By.name("fname"));
         WebElement nameelemcss=driver.findElement(By.cssSelector("input[name=fname]"));
+        WebElement nameelemcss2=driver.findElement(By.cssSelector("[name=fname]"));
 
         WebElement classelem=driver.findElement(By.className("topSecret"));
         WebElement classelemcss=driver.findElement(By.cssSelector("p[class=topSecret]"));
+        WebElement classelemcss2=driver.findElement(By.cssSelector(".topSecret"));
+
 
         WebElement tagelem=driver.findElement(By.tagName("input"));
         WebElement tagelemcss=driver.findElement(By.cssSelector("input"));
@@ -34,6 +39,18 @@ public class SelectorTest {
 
         List<WebElement> list=driver.findElements(By.tagName("input"));
         System.out.println(list.size());
+
+        WebElement linktext=driver.findElement(By.linkText("Visit W3Schools.com!"));
+        WebElement partiallink=driver.findElement(By.partialLinkText("Visit"));
+
+        WebElement ulindiv=driver.findElement(By.cssSelector("div ul"));
+        WebElement trintable=driver.findElement(By.cssSelector("table tr"));
+
+        WebElement firstchildUlindiv = driver.findElement(By.cssSelector("div > ul "));
+        WebElement firstchildTrinTbody= driver.findElement(By.cssSelector("tbody > tr"));
+
+        WebElement firstformafterlabel= driver.findElement(By.cssSelector("label + form"));
+        WebElement allformafterlabel= driver.findElement(By.cssSelector("label ~ form"));
 
 
         Thread.sleep(5000);
