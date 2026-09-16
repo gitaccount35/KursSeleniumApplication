@@ -27,6 +27,10 @@ public class SelectorTest {
         WebElement nameelem=driver.findElement(By.name("fname"));
         WebElement nameelemcss=driver.findElement(By.cssSelector("input[name=fname]"));
         WebElement nameelemcss2=driver.findElement(By.cssSelector("[name=fname]"));
+        WebElement attcontains=driver.findElement(By.cssSelector("[name*=nam]"));
+        WebElement attrstarts=driver.findElement(By.cssSelector("[name^=f]"));
+        WebElement attrends=driver.findElement(By.cssSelector("[name$=name]"));
+
 
         WebElement classelem=driver.findElement(By.className("topSecret"));
         WebElement classelemcss=driver.findElement(By.cssSelector("p[class=topSecret]"));
@@ -52,6 +56,9 @@ public class SelectorTest {
         WebElement firstformafterlabel= driver.findElement(By.cssSelector("label + form"));
         WebElement allformafterlabel= driver.findElement(By.cssSelector("label ~ form"));
 
+        WebElement firstchild=driver.findElement(By.cssSelector("li:first-child"));
+        WebElement lastchild=driver.findElement(By.cssSelector("li:last-child"));
+        WebElement thirdchild=driver.findElement(By.cssSelector("li:nth-child(3)"));
 
         Thread.sleep(5000);
         driver.quit();
