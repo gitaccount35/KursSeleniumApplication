@@ -10,7 +10,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
 import java.util.List;
@@ -18,13 +20,13 @@ import java.util.function.Function;
 
 public class FirstTest extends BaseTest{
 
-    WebDriver driver ;
+    WebDriver driver;
 
     @Test
     public void pierwszyTest(){
         // jeszcze inny rodzaj waita 
-        WebDriverManager.edgedriver().setup();
-        driver = new EdgeDriver();
+        driver=DriverFactory.getDriver() ;
+
         driver.manage().window().maximize();
 
         driver.get("https://testeroprogramowania.github.io/selenium/wait2.html");
@@ -44,15 +46,16 @@ public class FirstTest extends BaseTest{
         Assert.assertFalse(paragr.getText().startsWith("Pojawiłem"));
         Assert.assertEquals(paragr.getText(),"Dopiero się pojawiłem!");
 
-
-        driver.quit();
+        //driver.quit();
 
     }
     @Test
     public void drugiTest(){
         // jeszcze inny rodzaj waita
-        WebDriverManager.edgedriver().setup();
-        driver = new EdgeDriver();
+        //WebDriverManager.edgedriver().setup();
+        //driver = new EdgeDriver();
+        driver=DriverFactory.getDriver() ;
+
         driver.manage().window().maximize();
 
         driver.get("https://testeroprogramowania.github.io/selenium/wait2.html");
@@ -63,13 +66,25 @@ public class FirstTest extends BaseTest{
 
         waitforElementtoexist(By.cssSelector("p"));
 
+        WebElement paragr=driver.findElement(By.cssSelector("p"));
 
-        driver.quit();
+        SoftAssert softAssert=new SoftAssert();
+
+        softAssert.assertEquals(paragr.isDisplayed(),"true");
+        softAssert.assertTrue(paragr.isDisplayed(),"Element is not displayed");
+        softAssert.assertEquals(paragr.getText(),"Dopiero","Teksty są różne");
+        softAssert.assertTrue(paragr.getText().startsWith("Dopiero"));
+        softAssert.assertFalse(paragr.getText().startsWith("Pojawiłem"));
+        softAssert.assertEquals(paragr.getText(),"Dopiero się", "Druga asercja");
+
+        softAssert.assertAll();
 
     }
 
 
      public void waitforElementtoexist(By locator){
+
+        driver=DriverFactory.getDriver() ;
 
          FluentWait<WebDriver> wait= new FluentWait<>(driver);
          wait.ignoring(NoSuchElementException.class);

@@ -1,7 +1,18 @@
 package Adnotations;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
+import org.testng.ITestResult;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class BaseTest {
 
@@ -46,8 +57,26 @@ public class BaseTest {
     }
 
     @AfterMethod
-    public void afterMethod(){
+    public void afterMethod(ITestResult result) {
         System.out.println("After Method");
+        WebDriver driver = DriverFactory.getExistingDriver();
+        if (driver == null) {
+            return;
+        }
+
+        try {
+            if (result.getStatus() == ITestResult.FAILURE) {
+                File sourceFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss-SSS"));
+                Path targetPath = Path.of("src", "test", "resources", "failure-screenshot-" + timestamp + ".png");
+                Files.createDirectories(targetPath.getParent());
+                Files.copy(sourceFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to save failure screenshot", e);
+        } finally {
+            DriverFactory.quitDriver();
+        }
     }
 
 
